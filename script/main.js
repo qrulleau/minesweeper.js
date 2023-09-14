@@ -6,37 +6,41 @@ buttonChoiceDifficulty.addEventListener("change", () => {
 
 const difficultySettings = {
   easy : {
-    "numberBomb" : 10,
-    "columnGrid" : 10,
-    "RowGrid" : 10,
+    "nbrBomb" : 10,
+    "nbrColumnGrid" : 10,
+    "nbrRowGrid" : 10,
   },
   medium : {
-    "numberBomb" : 20,
-    "columnGrid" : 20,
-    "RowGrid" : 20,
+    "nbrBomb" : 20,
+    "nbrColumnGrid" : 20,
+    "nbrRowGrid" : 20,
   },
   hard : {
-    "numberBomb" : 40,
-    "columnGrid" : 40,
-    "RowGrid" : 40,
+    "nbrBomb" : 40,
+    "nbrColumnGrid" : 40,
+    "nbrRowGrid" : 40,
   }
 }
 
 function createGrid(difficulty){
   console.log(Math.floor(Math.random() * 10));
   const main = document.querySelector('.main')
-  for (let index = 0; index < difficulty.RowGrid; index++) {
-    rowGrid = document.createElement('div')
-    rowGrid.classList.add('row');
+  for (let index = 0; index < difficulty.nbrRowGrid; index++) {
+    nbrRowGrid = document.createElement('div')
+    nbrRowGrid.classList.add('row');
 
-    for (let index = 0; index < difficulty.columnGrid; index++) {
+    for (let index = 0; index < difficulty.nbrColumnGrid; index++) {
       caseGrid = document.createElement('div')
       caseGrid.classList.add('case');
-      main.appendChild(rowGrid);
-      rowGrid.appendChild(caseGrid);
+      main.appendChild(nbrRowGrid);
+      nbrRowGrid.appendChild(caseGrid);
       
     } 
   }
+}
+
+function fillGrid($nbrBomb,$nbrRowGrid){
+
 }
 createGrid(difficultySettings.easy)
 
