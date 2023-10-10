@@ -31,7 +31,8 @@ function createGrid(difficulty){
 
     for (let index = 0; index < difficulty.nbrColumnGrid; index++) {
       caseGrid = document.createElement('div')
-      caseGrid.classList.add('case');
+      caseGrid.classList.add('case','hidden');
+      caseGrid.innerHTML = 'x';
       main.appendChild(nbrRowGrid);
       nbrRowGrid.appendChild(caseGrid);
       
@@ -44,4 +45,24 @@ function fillGrid($nbrBomb,$nbrRowGrid){
 }
 createGrid(difficultySettings.easy)
 
+function reveal(){
+  let casesGrid = document.querySelectorAll('.case');
+  casesGrid.forEach(cases => {
+    cases.addEventListener('click', () => {
+      let caseClase = cases.classList;
+      console.log(caseClase);
+      if (caseClase.contains('hidden')) {
+        cases.classList.add('reveal')
+        cases.classList.remove('hidden')
+      }
+      if (caseClase.contains('reveal')){
+        console.log('reveal')
+      }
+    })
+  });
+}
+
+
+
+reveal();
 
