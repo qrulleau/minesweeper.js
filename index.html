@@ -57,6 +57,11 @@
     height: 40px;
     border: 1px solid black;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: #fff;
   }
   .main {
     display: flex;
@@ -71,16 +76,18 @@
     display: flex;
     justify-content: center;
   }
-  .case {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    color: #fff;
-  }
   .hidden {
-    background-color: #fff;
+    background-color: grey;
     transition: 300ms;
+  }
+  .bomb {
+    width: 40px;
+  }
+  .hidden .bomb {
+    display: none;
+  }
+  .reveal .bomb {
+    display: block;
   }
 </style>
 <body>

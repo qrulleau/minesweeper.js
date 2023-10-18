@@ -23,16 +23,15 @@ const difficultySettings = {
 }
 
 function createGrid(difficulty){
-  console.log(Math.floor(Math.random() * 10));
   const main = document.querySelector('.main')
-  for (let index = 0; index < difficulty.nbrRowGrid; index++) {
+  for (let indexRow = 0; indexRow < difficulty.nbrRowGrid; indexRow++) {
     nbrRowGrid = document.createElement('div')
     nbrRowGrid.classList.add('row');
 
     for (let index = 0; index < difficulty.nbrColumnGrid; index++) {
       caseGrid = document.createElement('div')
       caseGrid.classList.add('case','hidden');
-      caseGrid.innerHTML = 'x';
+      caseGrid.setAttribute('id', `${indexRow}.${index}`);
       main.appendChild(nbrRowGrid);
       nbrRowGrid.appendChild(caseGrid);
       
@@ -40,9 +39,36 @@ function createGrid(difficulty){
   }
 }
 
-function fillGrid($nbrBomb,$nbrRowGrid){
+function fillGrid(nbrBomb,nbrRowGrid,nbrColumnGrid){
+  
+  let bomb = {
+    src: '/assets/bomb.png'
+  }
 
+ for (let index = 0; index < nbrBomb; index++) {
+
+  const aleaRow = Math.floor(Math.random() * nbrRowGrid);
+  const aleaColumn = Math.floor(Math.random() * nbrColumnGrid);
+  let casse = document.getElementById(`${aleaRow}.${aleaColumn}`);
+  let checkBomb = casse.getElementsByTagName('img');
+
+  if (checkBomb.length < 1) {
+    createBomb(casse,bomb)
+  } else {
+    index--;
+  }
+  
+ }
+  
 }
+
+function createBomb(casse,bomb){
+  let bombGrid = document.createElement('img');
+  bombGrid.src = bomb.src;
+  bombGrid.classList.add('bomb');
+  casse.appendChild(bombGrid);
+}
+
 createGrid(difficultySettings.easy)
 
 function reveal(){
@@ -50,13 +76,11 @@ function reveal(){
   casesGrid.forEach(cases => {
     cases.addEventListener('click', () => {
       let caseClase = cases.classList;
-      console.log(caseClase);
       if (caseClase.contains('hidden')) {
         cases.classList.add('reveal')
         cases.classList.remove('hidden')
       }
       if (caseClase.contains('reveal')){
-        console.log('reveal')
       }
     })
   });
@@ -65,4 +89,4 @@ function reveal(){
 
 
 reveal();
-
+fillGrid(difficultySettings.easy.nbrBomb, difficultySettings.easy.nbrRowGrid, difficultySettings.easy.nbrColumnGrid)
