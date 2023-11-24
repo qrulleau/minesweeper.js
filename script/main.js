@@ -37,11 +37,30 @@ function createGrid(difficulty){
   }
 }
 
-function putNumberCase(){
+function putNumberCase() {
   let casesGrid = document.querySelectorAll('.case');
+
   casesGrid.forEach(caseGrid => {
-    console.log(caseGrid);
-  })
+    const [row, column] = caseGrid.id.split('.').map(Number);
+    console.log(row,column)
+    let bombCount = 0;
+
+    for (let i = row - 1; i <= row + 1; i++) {
+      for (let j = column - 1; j <= column + 1; j++) {
+        if (i >= 0 && i < difficultySettings[valueButtonDifficulty].nbrRowGrid && j >= 0 && j < difficultySettings[valueButtonDifficulty].nbrColumnGrid) {
+          const neighborCase = document.getElementById(`${i}.${j}`);
+          if (neighborCase && neighborCase.querySelector('.bomb')) {
+            bombCount++;
+          }
+        }
+      }
+    }
+
+    // Ajouter le nombre de bombes voisines à la case
+    if (bombCount > 0 && !caseGrid.querySelector('.bomb')) {
+      caseGrid.textContent = bombCount;
+    }
+  });
 }
 
 function fillGrid(difficulty){
@@ -64,6 +83,7 @@ function fillGrid(difficulty){
   }
   
  }
+ putNumberCase();
   
 }
 
@@ -75,18 +95,16 @@ function createBomb(casse,bomb){
 }
 
 
-function reveal(){
+function reveal() {
   let casesGrid = document.querySelectorAll('.case');
   casesGrid.forEach(cases => {
     cases.addEventListener('click', () => {
-      let caseClase = cases.classList;
-      if (caseClase.contains('hidden')) {
-        cases.classList.add('reveal')
-        cases.classList.remove('hidden')
+      let caseClass = cases.classList;
+      if (caseClass.contains('hidden')) {
+        cases.classList.add('reveal');
+        cases.classList.remove('hidden');
       }
-      if (caseClase.contains('reveal')){
-      }
-    })
+    });
   });
 }
 
