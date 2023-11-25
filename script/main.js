@@ -42,7 +42,6 @@ function putNumberCase() {
 
   casesGrid.forEach(caseGrid => {
     const [row, column] = caseGrid.id.split('.').map(Number);
-    console.log(row,column)
     let bombCount = 0;
 
     for (let i = row - 1; i <= row + 1; i++) {
@@ -56,7 +55,6 @@ function putNumberCase() {
       }
     }
 
-    // Ajouter le nombre de bombes voisines à la case
     if (bombCount > 0 && !caseGrid.querySelector('.bomb')) {
       caseGrid.textContent = bombCount;
     }
@@ -94,6 +92,65 @@ function createBomb(casse,bomb){
   casse.appendChild(bombGrid);
 }
 
+function isValidCell(row, column) {
+  return (
+    row >= 0 &&
+    row < difficultySettings[valueButtonDifficulty].nbrRowGrid &&
+    column >= 0 &&
+    column < difficultySettings[valueButtonDifficulty].nbrColumnGrid
+  );
+}
+
+function revealAdjacentCells(row, column) {
+  const directions = [
+    { row: -1, col: 0 },
+    { row: 1, col: 0 },
+    { row: 0, col: -1 },
+    { row: 0, col: 1 },
+    { row: -1, col: -1 },
+    { row: -1, col: 1 },
+    { row: 1, col: -1 },
+    { row: 1, col: 1 }
+  ];
+
+  const cellElement = document.getElementById(`${row}.${column}`);
+  const isEmptyCell = cellElement.classList.contains('hidden') && !cellElement.classList.contains('reveal');
+
+  if (isEmptyCell) {
+    for (const direction of directions) {
+      const newRow = row + direction.row;
+      const newCol = column + direction.col;
+
+      if (isValidCell(newRow, newCol)) {
+        const neighborElement = document.getElementById(`${newRow}.${newCol}`);
+        const isHidden = neighborElement.classList.contains('hidden');
+        const isRevealed = neighborElement.classList.contains('reveal');
+
+        if (isHidden && !isRevealed) {
+          neighborElement.classList.add('reveal');
+          neighborElement.classList.remove('hidden');
+
+          const hasBomb = neighborElement.querySelector('.bomb');
+          if (!hasBomb) {
+            revealAdjacentCells(newRow, newCol);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+function checkCell(row, column) {
+  const caseElement = document.getElementById(`${row}.${column}`);
+  const bombElement = caseElement.querySelector('.bomb');
+
+  if (bombElement) {
+    window.alert('Boom! Game Over');
+  } else {
+    revealAdjacentCells(row, column);
+  }
+}
 
 function reveal() {
   let casesGrid = document.querySelectorAll('.case');
@@ -103,6 +160,9 @@ function reveal() {
       if (caseClass.contains('hidden')) {
         cases.classList.add('reveal');
         cases.classList.remove('hidden');
+        
+        const [row, column] = cases.id.split('.').map(Number);
+        checkCell(row, column);
       }
     });
   });
